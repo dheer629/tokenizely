@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Brain, BookOpen, Network, Layers } from "lucide-react";
+import { Brain, BookOpen, Network, Layers, ArrowRight, Lightbulb, Zap } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -142,37 +142,78 @@ const Index = () => {
           </TabsContent>
 
           <TabsContent value="learn">
-            <Card className="bg-slate-800 border-slate-700">
-              <CardContent className="p-6 text-white space-y-4">
-                <h2 className="text-2xl font-bold mb-4">Understanding Transformers</h2>
-                
-                <div className="space-y-4">
-                  <section>
-                    <h3 className="text-xl font-semibold text-blue-400 mb-2">What are Tokens?</h3>
-                    <p className="text-slate-300">
-                      Tokens are the basic units that a transformer model works with. Think of them as pieces of words or symbols. For example, the word "playing" might be broken down into "play" and "ing".
-                    </p>
-                  </section>
+            <div className="space-y-6">
+              <Card className="bg-slate-800 border-slate-700">
+                <CardContent className="p-6">
+                  <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+                    <Lightbulb className="h-6 w-6 text-yellow-400" />
+                    Understanding Transformers
+                  </h2>
+                  
+                  <div className="space-y-8">
+                    <section className="space-y-4">
+                      <h3 className="text-xl font-semibold text-blue-400 flex items-center gap-2">
+                        <Zap className="h-5 w-5" />
+                        Step 1: Tokenization
+                      </h3>
+                      <p className="text-slate-300">
+                        Imagine you're breaking down a sentence into its smallest meaningful parts. That's what tokenization does! For example, the word "playing" might be split into "play" and "ing". This helps the computer understand the structure of language better.
+                      </p>
+                      <div className="bg-slate-900 p-4 rounded-lg">
+                        <p className="text-sm text-slate-400">Example:</p>
+                        <div className="flex items-center gap-2 mt-2">
+                          <span className="text-white">"playing"</span>
+                          <ArrowRight className="h-4 w-4 text-blue-400" />
+                          <span className="px-2 py-1 bg-slate-700 rounded text-blue-400 font-mono text-sm">play</span>
+                          <span className="px-2 py-1 bg-slate-700 rounded text-blue-400 font-mono text-sm">ing</span>
+                        </div>
+                      </div>
+                    </section>
 
-                  <section>
-                    <h3 className="text-xl font-semibold text-blue-400 mb-2">What are Embeddings?</h3>
-                    <p className="text-slate-300">
-                      Embeddings are like secret codes for words - they convert words into lists of numbers that computers can understand. These numbers capture the meaning and relationships between words. Similar words will have similar number patterns!
-                    </p>
-                  </section>
+                    <section className="space-y-4">
+                      <h3 className="text-xl font-semibold text-blue-400 flex items-center gap-2">
+                        <Layers className="h-5 w-5" />
+                        Step 2: Embeddings
+                      </h3>
+                      <p className="text-slate-300">
+                        After tokenization, each token is converted into a list of numbers called an embedding. Think of it like giving each word a special code that captures its meaning. Similar words will have similar codes!
+                      </p>
+                      <div className="bg-slate-900 p-4 rounded-lg">
+                        <p className="text-sm text-slate-400">For example, these words have similar embeddings:</p>
+                        <div className="flex flex-col gap-2 mt-2">
+                          <div className="flex items-center gap-2">
+                            <span className="px-2 py-1 bg-slate-700 rounded text-blue-400 font-mono text-sm">cat</span>
+                            <span className="text-slate-400">→</span>
+                            <span className="text-slate-300 font-mono">[0.2, -0.5, 0.1, ...]</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="px-2 py-1 bg-slate-700 rounded text-blue-400 font-mono text-sm">kitten</span>
+                            <span className="text-slate-400">→</span>
+                            <span className="text-slate-300 font-mono">[0.3, -0.4, 0.2, ...]</span>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
 
-                  <section>
-                    <h3 className="text-xl font-semibold text-blue-400 mb-2">How it Works</h3>
-                    <ol className="list-decimal list-inside space-y-2 text-slate-300">
-                      <li>First, your text is split into tokens</li>
-                      <li>Each token is converted into an embedding (a list of numbers)</li>
-                      <li>The transformer processes these numbers to understand the relationships between words</li>
-                      <li>This helps the model understand and generate text!</li>
-                    </ol>
-                  </section>
-                </div>
-              </CardContent>
-            </Card>
+                    <section className="space-y-4">
+                      <h3 className="text-xl font-semibold text-blue-400 flex items-center gap-2">
+                        <Network className="h-5 w-5" />
+                        Step 3: Attention Mechanism
+                      </h3>
+                      <p className="text-slate-300">
+                        The attention mechanism is like having a spotlight that helps the model focus on important words when processing a sentence. It looks at how each word relates to every other word in the text.
+                      </p>
+                      <div className="bg-slate-900 p-4 rounded-lg">
+                        <p className="text-sm text-slate-400">Example sentence: "The cat sat on the mat"</p>
+                        <p className="text-sm text-slate-300 mt-2">
+                          When processing "cat", the model pays attention to related words like "sat" and "mat", helping it understand the context better.
+                        </p>
+                      </div>
+                    </section>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
         </Tabs>
       </div>
