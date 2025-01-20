@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Code2, Info, BookOpen } from "lucide-react";
+import { Brain, BookOpen, Network, Layers } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -51,7 +51,7 @@ const Index = () => {
     <div className="min-h-screen bg-[#1E293B] p-6">
       <div className="max-w-4xl mx-auto space-y-6">
         <h1 className="text-4xl font-bold text-white mb-8 flex items-center gap-2">
-          <BookOpen className="h-8 w-8" />
+          <Brain className="h-8 w-8" />
           Learn About Transformers
         </h1>
 
@@ -72,7 +72,7 @@ const Index = () => {
                   Tokenizer & Embedding Playground
                   <Tooltip>
                     <TooltipTrigger>
-                      <Info className="h-4 w-4 text-blue-400" />
+                      <Network className="h-4 w-4 text-blue-400" />
                     </TooltipTrigger>
                     <TooltipContent>
                       Enter text to see how it's broken down into tokens and converted to embeddings
