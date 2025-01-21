@@ -1,8 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Brain, Calculator, Hash, Layers } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export const EmbeddingVisualizer = () => {
+  const [inputText, setInputText] = useState("");
+  const [vectorEmbedding, setVectorEmbedding] = useState<number[]>([]);
+  const [positionalEmbedding, setPositionalEmbedding] = useState<number[]>([]);
+  const [contextualEmbedding, setContextualEmbedding] = useState<number[]>([]);
+
+  // Simple mock embedding calculation for educational purposes
+  const calculateEmbeddings = () => {
+    // Vector embedding (mock calculation - in reality would use a proper model)
+    const mockVectorEmbedding = inputText.split('').map((char) => 
+      char.charCodeAt(0) / 255
+    );
+    setVectorEmbedding(mockVectorEmbedding.slice(0, 5));
+
+    // Positional embedding (using simple sine function)
+    const mockPositionalEmbedding = inputText.split('').map((_, i) => 
+      Math.sin(i / Math.pow(10000, 2 * (i % 2) / 64))
+    );
+    setPositionalEmbedding(mockPositionalEmbedding.slice(0, 5));
+
+    // Contextual embedding (combining vector and positional)
+    const mockContextualEmbedding = mockVectorEmbedding.map((vec, i) => 
+      vec + mockPositionalEmbedding[i]
+    );
+    setContextualEmbedding(mockContextualEmbedding.slice(0, 5));
+  };
+
   return (
     <Card className="bg-slate-800 border-slate-700 mt-4">
       <CardHeader>
@@ -12,6 +40,27 @@ export const EmbeddingVisualizer = () => {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
+        {/* Input Section */}
+        <div className="bg-slate-900 p-4 rounded-lg">
+          <h3 className="text-xl font-semibold text-orange-400 mb-3">
+            Input Text
+          </h3>
+          <div className="space-y-4">
+            <Input
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              placeholder="Enter text to see embeddings..."
+              className="bg-slate-800 text-white border-slate-700"
+            />
+            <Button 
+              onClick={calculateEmbeddings}
+              className="bg-orange-500 hover:bg-orange-600 text-white"
+            >
+              Calculate Embeddings
+            </Button>
+          </div>
+        </div>
+
         {/* Vector Embedding Section */}
         <section className="bg-slate-900 p-4 rounded-lg">
           <h3 className="text-xl font-semibold text-orange-400 flex items-center gap-2 mb-3">
@@ -23,7 +72,11 @@ export const EmbeddingVisualizer = () => {
               Words → Numbers: Each word becomes a list of numbers (vector)
             </p>
             <div className="bg-slate-800 p-3 rounded font-mono text-sm">
-              "cat" → [0.2, -0.5, 0.8, ...]
+              {vectorEmbedding.length > 0 ? (
+                `[${vectorEmbedding.map(v => v.toFixed(4)).join(', ')}]`
+              ) : (
+                '"cat" → [0.2, -0.5, 0.8, ...]'
+              )}
             </div>
             <p className="text-sm text-slate-300">
               Formula: E(word) = [e₁, e₂, e₃, ..., eₙ]
@@ -42,7 +95,11 @@ export const EmbeddingVisualizer = () => {
               Adding position information to each word
             </p>
             <div className="bg-slate-800 p-3 rounded font-mono text-sm">
-              Position(i) = sin(i/10000²ᵈ/ᵈᵐᵒᵈᵉˡ)
+              {positionalEmbedding.length > 0 ? (
+                `[${positionalEmbedding.map(v => v.toFixed(4)).join(', ')}]`
+              ) : (
+                'Position(i) = sin(i/10000²ᵈ/ᵈᵐᵒᵈᵉˡ)'
+              )}
             </div>
             <p className="text-sm text-slate-300">
               Where: i = position, d = dimension
@@ -61,7 +118,11 @@ export const EmbeddingVisualizer = () => {
               Final embedding = Word Vector + Position Vector
             </p>
             <div className="bg-slate-800 p-3 rounded font-mono text-sm">
-              E_final = E_word + E_position
+              {contextualEmbedding.length > 0 ? (
+                `[${contextualEmbedding.map(v => v.toFixed(4)).join(', ')}]`
+              ) : (
+                'E_final = E_word + E_position'
+              )}
             </div>
           </div>
         </section>
