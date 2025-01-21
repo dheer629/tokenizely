@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TokenizerPlayground } from "@/components/TokenizerPlayground";
 import { TransformerExplanation } from "@/components/TransformerExplanation";
+import { EmbeddingVisualizer } from "@/components/EmbeddingVisualizer";
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -49,6 +50,7 @@ const Index = () => {
 
           <TabsContent value="playground">
             <TokenizerPlayground />
+            <EmbeddingVisualizer />
           </TabsContent>
 
           <TabsContent value="learn">
