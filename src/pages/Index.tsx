@@ -2,21 +2,29 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Brain, BookOpen, Network, Layers, ArrowRight, Lightbulb, Zap } from "lucide-react";
+import { Brain, BookOpen, Network, Layers, ArrowRight, Lightbulb, Zap, LogOut } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
 import { pipeline } from "@huggingface/transformers";
 
 const Index = () => {
+  const navigate = useNavigate();
   const [inputText, setInputText] = useState("");
   const [tokens, setTokens] = useState<string[]>([]);
   const [tokenCount, setTokenCount] = useState(0);
   const [embeddings, setEmbeddings] = useState<number[][]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate("/auth");
+  };
 
   const handleTokenize = async () => {
     setIsProcessing(true);
@@ -50,10 +58,20 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-[#1E293B] p-6">
       <div className="max-w-4xl mx-auto space-y-6">
-        <h1 className="text-4xl font-bold text-white mb-8 flex items-center gap-2">
-          <Brain className="h-8 w-8" />
-          Learn About Transformers
-        </h1>
+        <div className="flex justify-between items-center">
+          <h1 className="text-4xl font-bold text-white mb-8 flex items-center gap-2">
+            <Brain className="h-8 w-8" />
+            Learn About Transformers
+          </h1>
+          <Button 
+            variant="outline" 
+            onClick={handleLogout}
+            className="text-white"
+          >
+            <LogOut className="mr-2 h-4 w-4" />
+            Logout
+          </Button>
+        </div>
 
         <Tabs defaultValue="playground" className="space-y-4">
           <TabsList className="bg-slate-800 border-slate-700">
