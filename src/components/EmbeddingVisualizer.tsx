@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Brain, Function, Hash, Layers } from "lucide-react";
+import { Brain, Calculator, Hash, Layers } from "lucide-react";
 
 export const EmbeddingVisualizer = () => {
   return (
@@ -34,7 +34,7 @@ export const EmbeddingVisualizer = () => {
         {/* Positional Embedding Section */}
         <section className="bg-slate-900 p-4 rounded-lg">
           <h3 className="text-xl font-semibold text-orange-400 flex items-center gap-2 mb-3">
-            <Function className="h-5 w-5" />
+            <Calculator className="h-5 w-5" />
             Positional Embedding
           </h3>
           <div className="text-white space-y-2">
