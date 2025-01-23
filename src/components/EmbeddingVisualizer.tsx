@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Brain, Calculator, Hash, Layers, Sparkles, BookOpen, ChevronRight, Lightbulb } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Brain } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { InputSection } from "./transformer/InputSection";
+import { TransformerStep } from "./transformer/TransformerStep";
+import { PredictionDisplay } from "./transformer/PredictionDisplay";
 
 interface TransformerStep {
   id: number;
@@ -83,97 +84,27 @@ export const EmbeddingVisualizer = () => {
           </CardTitle>
         </CardHeader>
         <CardContent className="p-6 space-y-6">
-          {/* Input Section */}
-          <div className="bg-orange-50/50 p-6 rounded-lg border border-orange-100">
-            <h3 className="text-xl font-semibold text-orange-600 mb-3 flex items-center gap-2">
-              <Lightbulb className="h-5 w-5" />
-              Try It Yourself!
-            </h3>
-            <div className="space-y-4">
-              <div className="bg-white p-4 rounded-lg border border-orange-100">
-                <p className="text-gray-600 mb-3">
-                  Enter any text below to see how a transformer processes it step by step!
-                </p>
-                <Input
-                  value={inputText}
-                  onChange={(e) => setInputText(e.target.value)}
-                  placeholder="Example: The cat sat on the mat..."
-                  className="border-orange-200 focus:border-orange-400"
-                />
-              </div>
-              <Button 
-                onClick={calculateEmbeddings}
-                className="bg-orange-500 hover:bg-orange-600 text-white w-full"
-              >
-                <Sparkles className="mr-2 h-4 w-4" />
-                See the Magic Happen!
-              </Button>
-            </div>
-          </div>
+          <InputSection 
+            inputText={inputText}
+            setInputText={setInputText}
+            onCalculate={calculateEmbeddings}
+          />
 
-          {/* Step by Step Visualization */}
           {steps.map((step) => (
-            <div 
+            <TransformerStep
               key={step.id}
-              className={`bg-gradient-to-r from-orange-50/30 to-white p-6 rounded-lg border border-orange-100 transition-all duration-300 ${
-                currentStep >= step.order_number ? 'opacity-100' : 'opacity-50'
-              }`}
-            >
-              <h3 className="text-xl font-semibold text-orange-600 flex items-center gap-2 mb-3">
-                <ChevronRight className="h-5 w-5" />
-                Step {step.order_number}: {step.step_name}
-              </h3>
-              <div className="space-y-4">
-                <p className="text-gray-700">{step.description}</p>
-                <div className="bg-white p-4 rounded-lg border border-orange-200">
-                  <p className="text-sm text-gray-500 mb-2">Mathematical Formula:</p>
-                  <code className="text-orange-800 block bg-orange-50/50 p-3 rounded">
-                    {step.formula}
-                  </code>
-                </div>
-                {step.order_number === 1 && vectorEmbedding.length > 0 && (
-                  <div className="bg-white p-4 rounded-lg border border-orange-200">
-                    <p className="text-sm text-gray-500 mb-2">Vector Values:</p>
-                    <p className="font-mono text-sm text-orange-800 bg-orange-50/50 p-3 rounded">
-                      [{vectorEmbedding.map(v => v.toFixed(4)).join(', ')}]
-                    </p>
-                  </div>
-                )}
-                {step.order_number === 2 && positionalEmbedding.length > 0 && (
-                  <div className="bg-white p-4 rounded-lg border border-orange-200">
-                    <p className="text-sm text-gray-500 mb-2">Position Values:</p>
-                    <p className="font-mono text-sm text-orange-800 bg-orange-50/50 p-3 rounded">
-                      [{positionalEmbedding.map(v => v.toFixed(4)).join(', ')}]
-                    </p>
-                  </div>
-                )}
-                {step.order_number === 3 && contextualEmbedding.length > 0 && (
-                  <div className="bg-white p-4 rounded-lg border border-orange-200">
-                    <p className="text-sm text-gray-500 mb-2">Context Values:</p>
-                    <p className="font-mono text-sm text-orange-800 bg-orange-50/50 p-3 rounded">
-                      [{contextualEmbedding.map(v => v.toFixed(4)).join(', ')}]
-                    </p>
-                  </div>
-                )}
-              </div>
-            </div>
+              step={step}
+              currentStep={currentStep}
+              vectorValues={
+                step.order_number === 1 ? vectorEmbedding :
+                step.order_number === 2 ? positionalEmbedding :
+                step.order_number === 3 ? contextualEmbedding :
+                undefined
+              }
+            />
           ))}
 
-          {/* Final Prediction */}
-          {prediction && (
-            <div className="bg-gradient-to-r from-orange-100/50 to-white p-6 rounded-lg border border-orange-200">
-              <h3 className="text-xl font-semibold text-orange-600 flex items-center gap-2 mb-3">
-                <Sparkles className="h-5 w-5" />
-                Final Prediction
-              </h3>
-              <div className="bg-white p-4 rounded-lg border border-orange-200">
-                <p className="text-sm text-gray-500 mb-2">The transformer thinks your text is:</p>
-                <p className="font-semibold text-lg text-orange-600">
-                  {prediction}
-                </p>
-              </div>
-            </div>
-          )}
+          <PredictionDisplay prediction={prediction} />
         </CardContent>
       </Card>
     </div>
