@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Brain, Calculator, Hash, Layers } from "lucide-react";
+import { Brain, Calculator, Hash, Layers, Sparkles } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -9,9 +9,12 @@ export const EmbeddingVisualizer = () => {
   const [vectorEmbedding, setVectorEmbedding] = useState<number[]>([]);
   const [positionalEmbedding, setPositionalEmbedding] = useState<number[]>([]);
   const [contextualEmbedding, setContextualEmbedding] = useState<number[]>([]);
+  const [prediction, setPrediction] = useState<string>("");
 
   // Simple mock embedding calculation for educational purposes
   const calculateEmbeddings = () => {
+    if (!inputText) return;
+
     // Vector embedding (mock calculation - in reality would use a proper model)
     const mockVectorEmbedding = inputText.split('').map((char) => 
       char.charCodeAt(0) / 255
@@ -29,6 +32,21 @@ export const EmbeddingVisualizer = () => {
       vec + mockPositionalEmbedding[i]
     );
     setContextualEmbedding(mockContextualEmbedding.slice(0, 5));
+
+    // Generate a simple prediction based on the contextual embedding
+    const avgEmbedding = mockContextualEmbedding.reduce((a, b) => a + b, 0) / mockContextualEmbedding.length;
+    
+    // Simple classification based on average embedding value
+    let predictedCategory;
+    if (avgEmbedding < 0.3) {
+      predictedCategory = "Technical content";
+    } else if (avgEmbedding < 0.5) {
+      predictedCategory = "General description";
+    } else {
+      predictedCategory = "Creative writing";
+    }
+    
+    setPrediction(predictedCategory);
   };
 
   return (
@@ -127,7 +145,29 @@ export const EmbeddingVisualizer = () => {
           </div>
         </section>
 
-        {/* Transformer Architecture */}
+        {/* Final Prediction Section */}
+        <section className="bg-slate-900 p-4 rounded-lg">
+          <h3 className="text-xl font-semibold text-orange-400 flex items-center gap-2 mb-3">
+            <Sparkles className="h-5 w-5" />
+            Final Prediction
+          </h3>
+          <div className="text-white space-y-2">
+            <p className="text-sm">
+              Using embeddings to classify the text
+            </p>
+            <div className="bg-slate-800 p-3 rounded font-mono text-sm">
+              {prediction ? (
+                `Predicted Category: ${prediction}`
+              ) : (
+                'Enter text and calculate embeddings to see prediction'
+              )}
+            </div>
+            <p className="text-sm text-slate-300">
+              Based on average embedding values and pattern recognition
+            </p>
+          </div>
+        </section>
+
         <section className="bg-slate-900 p-4 rounded-lg">
           <h3 className="text-xl font-semibold text-orange-400 mb-3">
             Transformer Architecture
