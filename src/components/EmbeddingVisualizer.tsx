@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Brain, Calculator, Hash, Layers, Sparkles, BookOpen, ChevronRight } from "lucide-react";
+import { Brain, Calculator, Hash, Layers, Sparkles, BookOpen, ChevronRight, Lightbulb } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -75,32 +75,38 @@ export const EmbeddingVisualizer = () => {
 
   return (
     <div className="space-y-6">
-      <Card className="bg-white border-orange-200">
-        <CardHeader className="border-b border-orange-100">
+      <Card className="bg-white border-orange-200 overflow-hidden">
+        <CardHeader className="border-b border-orange-100 bg-gradient-to-r from-orange-50 to-white">
           <CardTitle className="text-orange-600 flex items-center gap-2">
             <Brain className="h-6 w-6" />
-            Transformer Architecture Visualization
+            Transformer Architecture Explorer
           </CardTitle>
         </CardHeader>
         <CardContent className="p-6 space-y-6">
           {/* Input Section */}
-          <div className="bg-orange-50 p-4 rounded-lg">
+          <div className="bg-orange-50/50 p-6 rounded-lg border border-orange-100">
             <h3 className="text-xl font-semibold text-orange-600 mb-3 flex items-center gap-2">
-              <BookOpen className="h-5 w-5" />
-              Input Text
+              <Lightbulb className="h-5 w-5" />
+              Try It Yourself!
             </h3>
             <div className="space-y-4">
-              <Input
-                value={inputText}
-                onChange={(e) => setInputText(e.target.value)}
-                placeholder="Enter text to see transformer calculations..."
-                className="border-orange-200 focus:border-orange-400"
-              />
+              <div className="bg-white p-4 rounded-lg border border-orange-100">
+                <p className="text-gray-600 mb-3">
+                  Enter any text below to see how a transformer processes it step by step!
+                </p>
+                <Input
+                  value={inputText}
+                  onChange={(e) => setInputText(e.target.value)}
+                  placeholder="Example: The cat sat on the mat..."
+                  className="border-orange-200 focus:border-orange-400"
+                />
+              </div>
               <Button 
                 onClick={calculateEmbeddings}
-                className="bg-orange-500 hover:bg-orange-600 text-white"
+                className="bg-orange-500 hover:bg-orange-600 text-white w-full"
               >
-                Calculate Transformations
+                <Sparkles className="mr-2 h-4 w-4" />
+                See the Magic Happen!
               </Button>
             </div>
           </div>
@@ -109,37 +115,43 @@ export const EmbeddingVisualizer = () => {
           {steps.map((step) => (
             <div 
               key={step.id}
-              className={`bg-orange-50 p-4 rounded-lg transition-all duration-300 ${
+              className={`bg-gradient-to-r from-orange-50/30 to-white p-6 rounded-lg border border-orange-100 transition-all duration-300 ${
                 currentStep >= step.order_number ? 'opacity-100' : 'opacity-50'
               }`}
             >
               <h3 className="text-xl font-semibold text-orange-600 flex items-center gap-2 mb-3">
                 <ChevronRight className="h-5 w-5" />
-                {step.step_name}
+                Step {step.order_number}: {step.step_name}
               </h3>
               <div className="space-y-4">
                 <p className="text-gray-700">{step.description}</p>
-                <div className="bg-white p-3 rounded border border-orange-200">
-                  <code className="text-orange-800">{step.formula}</code>
+                <div className="bg-white p-4 rounded-lg border border-orange-200">
+                  <p className="text-sm text-gray-500 mb-2">Mathematical Formula:</p>
+                  <code className="text-orange-800 block bg-orange-50/50 p-3 rounded">
+                    {step.formula}
+                  </code>
                 </div>
                 {step.order_number === 1 && vectorEmbedding.length > 0 && (
-                  <div className="bg-white p-3 rounded border border-orange-200">
-                    <p className="font-mono text-sm text-orange-800">
-                      Vector: [{vectorEmbedding.map(v => v.toFixed(4)).join(', ')}]
+                  <div className="bg-white p-4 rounded-lg border border-orange-200">
+                    <p className="text-sm text-gray-500 mb-2">Vector Values:</p>
+                    <p className="font-mono text-sm text-orange-800 bg-orange-50/50 p-3 rounded">
+                      [{vectorEmbedding.map(v => v.toFixed(4)).join(', ')}]
                     </p>
                   </div>
                 )}
                 {step.order_number === 2 && positionalEmbedding.length > 0 && (
-                  <div className="bg-white p-3 rounded border border-orange-200">
-                    <p className="font-mono text-sm text-orange-800">
-                      Position: [{positionalEmbedding.map(v => v.toFixed(4)).join(', ')}]
+                  <div className="bg-white p-4 rounded-lg border border-orange-200">
+                    <p className="text-sm text-gray-500 mb-2">Position Values:</p>
+                    <p className="font-mono text-sm text-orange-800 bg-orange-50/50 p-3 rounded">
+                      [{positionalEmbedding.map(v => v.toFixed(4)).join(', ')}]
                     </p>
                   </div>
                 )}
                 {step.order_number === 3 && contextualEmbedding.length > 0 && (
-                  <div className="bg-white p-3 rounded border border-orange-200">
-                    <p className="font-mono text-sm text-orange-800">
-                      Context: [{contextualEmbedding.map(v => v.toFixed(4)).join(', ')}]
+                  <div className="bg-white p-4 rounded-lg border border-orange-200">
+                    <p className="text-sm text-gray-500 mb-2">Context Values:</p>
+                    <p className="font-mono text-sm text-orange-800 bg-orange-50/50 p-3 rounded">
+                      [{contextualEmbedding.map(v => v.toFixed(4)).join(', ')}]
                     </p>
                   </div>
                 )}
@@ -149,14 +161,15 @@ export const EmbeddingVisualizer = () => {
 
           {/* Final Prediction */}
           {prediction && (
-            <div className="bg-orange-50 p-4 rounded-lg">
+            <div className="bg-gradient-to-r from-orange-100/50 to-white p-6 rounded-lg border border-orange-200">
               <h3 className="text-xl font-semibold text-orange-600 flex items-center gap-2 mb-3">
                 <Sparkles className="h-5 w-5" />
                 Final Prediction
               </h3>
-              <div className="bg-white p-3 rounded border border-orange-200">
-                <p className="font-mono text-sm text-orange-800">
-                  Predicted Category: {prediction}
+              <div className="bg-white p-4 rounded-lg border border-orange-200">
+                <p className="text-sm text-gray-500 mb-2">The transformer thinks your text is:</p>
+                <p className="font-semibold text-lg text-orange-600">
+                  {prediction}
                 </p>
               </div>
             </div>
