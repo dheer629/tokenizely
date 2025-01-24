@@ -1,7 +1,7 @@
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Lightbulb, Sparkles } from "lucide-react";
+import { Lightbulb, Calculator } from "lucide-react";
 
 interface InputSectionProps {
   inputText: string;
@@ -11,29 +11,29 @@ interface InputSectionProps {
 
 export const InputSection = ({ inputText, setInputText, onCalculate }: InputSectionProps) => {
   return (
-    <div className="bg-orange-50/50 p-6 rounded-lg border border-orange-100">
-      <h3 className="text-xl font-semibold text-orange-600 mb-3 flex items-center gap-2">
+    <div className="bg-[#F1F0FB] p-6 rounded-lg border border-[#8E9196]/20">
+      <h3 className="text-xl font-semibold text-[#8E9196] mb-3 flex items-center gap-2">
         <Lightbulb className="h-5 w-5" />
         Try It Yourself!
       </h3>
       <div className="space-y-4">
-        <div className="bg-white p-4 rounded-lg border border-orange-100">
-          <p className="text-gray-600 mb-3">
+        <div className="bg-white p-4 rounded-lg border border-[#8E9196]/20">
+          <p className="text-[#8E9196] mb-3">
             Enter any text below to see how a transformer processes it step by step!
           </p>
           <Input
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             placeholder="Example: The cat sat on the mat..."
-            className="border-orange-200 focus:border-orange-400"
+            className="border-[#8E9196]/20 focus:border-[#FEC6A1]"
           />
         </div>
         <Button 
           onClick={onCalculate}
-          className="bg-orange-500 hover:bg-orange-600 text-white w-full"
+          className="bg-[#FEC6A1] hover:bg-[#F97316] text-white w-full"
         >
-          <Sparkles className="mr-2 h-4 w-4" />
-          See the Magic Happen!
+          <Calculator className="mr-2 h-4 w-4" />
+          Calculate Embeddings
         </Button>
       </div>
     </div>

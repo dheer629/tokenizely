@@ -49,6 +49,26 @@ export const TransformerStep = ({ step, currentStep, vectorValues }: Transformer
             result: val.toFixed(4)
           }))
         };
+      case 4:
+        return {
+          title: "Linear Layer Calculation",
+          explanation: "Applying weights and bias to each embedding value",
+          steps: values.map((val, idx) => ({
+            input: `Embedding ${idx + 1}`,
+            calculation: `${val.toFixed(4)} * weight[${idx}] + bias`,
+            result: val.toFixed(4)
+          }))
+        };
+      case 5:
+        return {
+          title: "Softmax Calculation",
+          explanation: "Converting linear outputs to probabilities that sum to 1",
+          steps: values.map((val, idx) => ({
+            input: `Linear output ${idx + 1}`,
+            calculation: `exp(${val.toFixed(4)}) / sum(exp(all_values))`,
+            result: val.toFixed(4)
+          }))
+        };
       default:
         return null;
     }
@@ -58,47 +78,47 @@ export const TransformerStep = ({ step, currentStep, vectorValues }: Transformer
 
   return (
     <div 
-      className={`bg-gradient-to-r from-orange-50/30 to-white p-6 rounded-lg border border-orange-100 transition-all duration-300 ${
+      className={`bg-gradient-to-r from-[#F1F0FB] to-white p-6 rounded-lg border border-[#8E9196]/20 transition-all duration-300 ${
         currentStep >= step.order_number ? 'opacity-100' : 'opacity-50'
       }`}
     >
-      <h3 className="text-xl font-semibold text-orange-600 flex items-center gap-2 mb-3">
+      <h3 className="text-xl font-semibold text-[#8E9196] flex items-center gap-2 mb-3">
         <ChevronRight className="h-5 w-5" />
         Step {step.order_number}: {step.step_name}
       </h3>
       <div className="space-y-4">
-        <p className="text-gray-700">{step.description}</p>
+        <p className="text-[#8E9196]">{step.description}</p>
         
-        <div className="bg-white p-4 rounded-lg border border-orange-200">
-          <p className="text-sm text-gray-500 mb-2">Mathematical Formula:</p>
-          <code className="text-orange-800 block bg-orange-50/50 p-3 rounded font-mono">
+        <div className="bg-white p-4 rounded-lg border border-[#8E9196]/20">
+          <p className="text-sm text-[#8E9196] mb-2">Mathematical Formula:</p>
+          <code className="text-[#F97316] block bg-[#F1F0FB] p-3 rounded font-mono">
             {step.formula}
           </code>
         </div>
 
         {calculations && (
-          <div className="bg-white p-4 rounded-lg border border-orange-200">
+          <div className="bg-white p-4 rounded-lg border border-[#8E9196]/20">
             <div className="flex items-center gap-2 mb-3">
-              <Calculator className="h-5 w-5 text-orange-500" />
-              <h4 className="font-semibold text-orange-600">{calculations.title}</h4>
+              <Calculator className="h-5 w-5 text-[#FEC6A1]" />
+              <h4 className="font-semibold text-[#8E9196]">{calculations.title}</h4>
             </div>
-            <p className="text-gray-600 mb-3 text-sm">{calculations.explanation}</p>
+            <p className="text-[#8E9196] mb-3 text-sm">{calculations.explanation}</p>
             
             <div className="space-y-3">
               {calculations.steps.map((step, idx) => (
-                <div key={idx} className="bg-orange-50/50 p-3 rounded">
+                <div key={idx} className="bg-[#F1F0FB] p-3 rounded">
                   <div className="grid grid-cols-3 gap-4 text-sm">
                     <div>
-                      <span className="text-gray-500">Input:</span>
-                      <span className="ml-2 font-mono text-orange-700">{step.input}</span>
+                      <span className="text-[#8E9196]">Input:</span>
+                      <span className="ml-2 font-mono text-[#F97316]">{step.input}</span>
                     </div>
                     <div>
-                      <span className="text-gray-500">Calculation:</span>
-                      <span className="ml-2 font-mono text-orange-700">{step.calculation}</span>
+                      <span className="text-[#8E9196]">Calculation:</span>
+                      <span className="ml-2 font-mono text-[#F97316]">{step.calculation}</span>
                     </div>
                     <div>
-                      <span className="text-gray-500">Result:</span>
-                      <span className="ml-2 font-mono text-orange-700">{step.result}</span>
+                      <span className="text-[#8E9196]">Result:</span>
+                      <span className="ml-2 font-mono text-[#F97316]">{step.result}</span>
                     </div>
                   </div>
                 </div>
@@ -108,9 +128,9 @@ export const TransformerStep = ({ step, currentStep, vectorValues }: Transformer
         )}
 
         {vectorValues && (
-          <div className="bg-white p-4 rounded-lg border border-orange-200">
-            <p className="text-sm text-gray-500 mb-2">Final Vector Values:</p>
-            <p className="font-mono text-sm text-orange-800 bg-orange-50/50 p-3 rounded">
+          <div className="bg-white p-4 rounded-lg border border-[#8E9196]/20">
+            <p className="text-sm text-[#8E9196] mb-2">Final Vector Values:</p>
+            <p className="font-mono text-sm text-[#F97316] bg-[#F1F0FB] p-3 rounded">
               [{vectorValues.map(v => v.toFixed(4)).join(', ')}]
             </p>
           </div>
